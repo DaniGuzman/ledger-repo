@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('ledger_currencies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ledger_id');
-            $table->foreignId('currencies_id');
+            $table->foreignId('currency_id');
             $table->softDeletes();
             $table->timestamps();
         });

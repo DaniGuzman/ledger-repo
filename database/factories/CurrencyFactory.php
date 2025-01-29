@@ -13,10 +13,10 @@ class CurrencyFactory extends Factory
     public function definition(): array
     {
         return [
+            'code' => $this->faker->currencyCode(),
+            'name' => $this->faker->name(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'code' => $this->faker->word(),
-            'name' => $this->faker->name(),
         ];
     }
 }
