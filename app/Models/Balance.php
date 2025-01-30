@@ -12,6 +12,8 @@ class Balance extends Model
 
     protected $fillable = [
         'balance',
+        'ledger_id',
+        'currency_id',
     ];
 
     protected function ledger()

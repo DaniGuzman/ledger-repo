@@ -14,6 +14,7 @@ class Transaction extends Model
         'transaction_id',
         'type',
         'amount',
+        'currency_id',
     ];
 
     protected function ledger()
