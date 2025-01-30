@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use App\DTOs\CreateLedgerDto;
 use App\DTOs\CreateTransactionDto;
 use App\Models\Balance;
 use App\Models\Currency;

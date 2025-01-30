@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Currency;
+use App\Models\Ledger;
 use function Pest\Laravel\postJson;
-use \App\Models\Currency;
-use \App\Models\Ledger;
 
 beforeEach(function () {
    $this->currency = Currency::factory()->create([

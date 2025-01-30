@@ -2,10 +2,10 @@
 
 use App\Actions\CreateLedgerAction;
 use App\DTOs\CreateLedgerDto;
+use App\Models\Currency;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
-use \App\Models\Currency;
 
 beforeEach(function () {
    $this->currency = Currency::factory()->create([
