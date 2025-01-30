@@ -16,12 +16,12 @@ class Balance extends Model
         'currency_id',
     ];
 
-    protected function ledger()
+    public function ledger()
     {
         return $this->belongsTo(Ledger::class);
     }
 
-    protected function currency()
+    public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_id');
     }

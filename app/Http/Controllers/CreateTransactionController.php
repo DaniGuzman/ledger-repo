@@ -30,7 +30,7 @@ class CreateTransactionController extends Controller
             dto: new CreateTransactionDto(
                 type: $request->type,
                 amount: $request->integer('amount'),
-            )
+            ),
         );
 
         return response()->noContent();
