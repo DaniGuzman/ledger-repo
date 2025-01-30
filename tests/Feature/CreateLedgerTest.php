@@ -71,3 +71,26 @@ it('creates a new ledger with a unique identifier and initial currency setting',
         ->and($ledger->currencies->first()->id)
         ->toBe($this->currency->id);
 });
+
+it('throttles requests after the rate limit is reached', function () {
+    // throttle limit number -> 5
+    for ($i = 0; $i < 5; $i++) {
+        $currency = Currency::factory()->create([
+            'code' => '__random_code__' . $i,
+        ]);
+
+        postJson($this->route, [
+            'name' => '__random_name__' . $i,
+            'currency_code' => $currency->code,
+        ])
+            ->assertCreated();
+    }
+
+    postJson($this->route,  [
+        'name' => '__random_name__' . 10,
+        'currency_code' => '__random_code__' . 10
+    ])
+        ->assertTooManyRequests()
+        ->assertJson(['message' => 'Too Many Attempts.']);
+});
+

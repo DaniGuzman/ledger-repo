@@ -15,7 +15,7 @@ Route::prefix('/ledgers')
     ->name('ledgers')
     ->scopeBindings()
     ->middleware([
-        'throttle:10,1',
+        'throttle:5,1',
     ])
     ->group(function () {
         Route::post('/', CreateLedgerController::class)->name('.create');
