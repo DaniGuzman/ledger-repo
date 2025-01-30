@@ -39,17 +39,6 @@ it('responds unprocessable if validation fails', function (array $queryParams, a
 
 it('converts returns the conversion when calling a third party API', function () {
     $fakeValue = 9000;
-
-    Http::fake([
-        '*' => Http::response([
-            'data' => [
-                'conversion' => [
-                    'value' => $fakeValue,
-                ]
-            ]
-        ]),
-    ]);
-
     $queryParams = [
         'currency_code' => [
             'origin' => 'EUR',

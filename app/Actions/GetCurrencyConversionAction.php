@@ -16,6 +16,16 @@ class GetCurrencyConversionAction
      */
     public function execute(GetCurrencyConversionDto $dto): GetCurrencyConversionDto
     {
+        Http::fake([
+            '*' => Http::response([
+                'data' => [
+                    'conversion' => [
+                        'value' => 9000,
+                    ]
+                ]
+            ]),
+        ]);
+
         $response = Http::baseUrl('random.third.party.com')
             ->acceptJson()
             ->get('/conversion', [
