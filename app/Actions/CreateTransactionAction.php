@@ -45,9 +45,12 @@ class CreateTransactionAction
             if ($dto->type === 'credit') {
                 $ledgerBalance->balance += $dto->amount;
             } else {
-                if (!$ledgerBalance || $ledgerBalance->balance < $dto->amount) {
-                    throw new \Exception('Insufficient money for this debit transaction.');
-                }
+                throw_if(
+                    condition: $ledgerBalance->balance < $dto->amount,
+                    exception: ValidationException::withMessages(messages: [
+                        'currency_code' => 'Insufficient money for this debit transaction.',
+                    ]),
+                );
 
                 $ledgerBalance->balance -= $dto->amount;
             }

@@ -3,6 +3,7 @@
 use App\Actions\CreateLedgerAction;
 use App\DTOs\CreateLedgerDto;
 use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
 use \App\Models\Currency;
 
@@ -87,7 +88,10 @@ it('it throws an error because the ledger doesnt have the current currency attac
     assertDatabaseCount(table: 'balances', count: 0);
 });
 
-it('creates a new credit transaction and attaches the balance to it', function () {
+it('creates a new credit transaction and creates a new balance', function () {
+    assertDatabaseCount(table: 'transactions', count: 0);
+    assertDatabaseCount(table: 'balances', count: 0);
+
     $data = [
         'type' => 'credit',
         'amount' => 500,
@@ -99,11 +103,108 @@ it('creates a new credit transaction and attaches the balance to it', function (
         $data
     );
 
-    dd($response->json('data'));
+    $response->assertNoContent();
 
-    expect($response->json('message'))
-        ->toBe('This Ledger doesnt support this currency.');
+    assertDatabaseCount(table: 'transactions', count: 1);
+    assertDatabaseCount(table: 'balances', count: 1);
+
+    assertDatabaseHas(table: 'transactions', data: [
+        'type' => $data['type'],
+        'amount' => $data['amount'],
+        'currency_id' => $this->currency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+
+    assertDatabaseHas(table: 'balances', data: [
+        'balance' => $data['amount'],
+        'currency_id' => $this->currency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+});
+
+it('throws an error creating a new debit transaction', function () {
+    assertDatabaseCount(table: 'transactions', count: 0);
+    assertDatabaseCount(table: 'balances', count: 0);
+
+    $data = [
+        'type' => 'debit',
+        'amount' => 500,
+        'currency_code' => $this->currency->code,
+    ];
+
+    $response = postJson(
+        $this->route,
+        $data
+    );
+
+    $response->assertUnprocessable()
+        ->assertJsonFragment([
+            'currency_code' => ['Insufficient money for this debit transaction.'],
+        ]);
 
     assertDatabaseCount(table: 'transactions', count: 0);
     assertDatabaseCount(table: 'balances', count: 0);
+});
+
+
+it('creates a new debit transaction and updates the balance', function () {
+    // this http create a new transaction and balance with 5 (EUR)
+    postJson($this->route, [
+        'type' => 'credit',
+        'amount' => 500,
+        'currency_code' => $this->currency->code,
+    ]);
+
+    $data = [
+        'type' => 'debit',
+        'amount' => 500,
+        'currency_code' => $this->currency->code,
+    ];
+
+    $response = postJson(
+        $this->route,
+        $data
+    );
+
+    $response->assertNoContent();
+
+    assertDatabaseCount(table: 'transactions', count: 2);
+    assertDatabaseCount(table: 'balances', count: 1);
+
+    assertDatabaseHas(table: 'transactions', data: [
+        'type' => 'debit',
+        'amount' => $data['amount'],
+        'currency_id' => $this->currency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+
+    assertDatabaseHas(table: 'balances', data: [
+        'balance' => 0,
+        'currency_id' => $this->currency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+});
+
+it('throws an error creating a new debit transaction without enough balance', function () {
+    // this http create a new transaction and balance with 5 (EUR)
+    postJson($this->route, [
+        'type' => 'credit',
+        'amount' => 500,
+        'currency_code' => $this->currency->code,
+    ]);
+
+    // this http will try to remove 5.01 (EUR)
+    $response = postJson($this->route, [
+        'type' => 'debit',
+        'amount' => 501,
+        'currency_code' => $this->currency->code,
+    ]);
+
+    $response->assertUnprocessable()
+        ->assertJsonFragment([
+            'currency_code' => ['Insufficient money for this debit transaction.'],
+        ]);
+
+    assertDatabaseCount(table: 'transactions', count: 1);
+    assertDatabaseCount(table: 'balances', count: 1);
 });
