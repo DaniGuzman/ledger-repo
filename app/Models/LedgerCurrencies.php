@@ -11,6 +11,11 @@ class LedgerCurrencies extends Model
 {
     use SoftDeletes, HasFactory;
 
+    protected $fillable = [
+        'ledger_id',
+        'currency_id',
+    ];
+
     protected function ledger(): BelongsTo
     {
         return $this->belongsTo(Ledger::class);

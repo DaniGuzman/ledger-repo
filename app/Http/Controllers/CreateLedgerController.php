@@ -18,7 +18,7 @@ class CreateLedgerController extends Controller
      * @return JsonResource
      *
      * @OA\Post(
-     *       path="/api/ledgers",
+     *       path="/ledgers",
      *       summary="Create a new ledger",
      *       description="This endpoint allows you to create a new ledger.",
      *       @OA\RequestBody(

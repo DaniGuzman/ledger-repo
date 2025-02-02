@@ -15,11 +15,11 @@ class ListBalancesController extends Controller
      * @throws \Throwable
      *
      * @OA\Get(
-     *     path="/api/{ledger}/balances",
+     *     path="/ledgers/{ledger}/balances",
      *     summary="Get the balance of a ledger",
      *     description="This endpoint retrieves the balance of a specific ledger by its ID.",
      *     @OA\Parameter(
-     *         name="ledgerId",
+     *         name="ledger",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer", example=1)

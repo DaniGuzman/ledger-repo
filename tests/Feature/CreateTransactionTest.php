@@ -67,27 +67,6 @@ it('responds unprocessable if validation fails', function (array $body, array $m
     ],
 ]);
 
-it('it throws an error because the ledger doesnt have the current currency attached', function () {
-    $newCurrency = Currency::factory()->create(['code' => 'USD']);
-
-    $data = [
-        'type' => 'debit',
-        'amount' => 500,
-        'currency_code' => $newCurrency->code,
-    ];
-
-    $response = postJson(
-        $this->route,
-        $data
-    );
-
-    expect($response->json('message'))
-        ->toBe('This Ledger doesnt support this currency.');
-
-    assertDatabaseCount(table: 'transactions', count: 0);
-    assertDatabaseCount(table: 'balances', count: 0);
-});
-
 it('creates a new credit transaction and creates a new balance', function () {
     assertDatabaseCount(table: 'transactions', count: 0);
     assertDatabaseCount(table: 'balances', count: 0);
@@ -210,4 +189,48 @@ it('throws an error creating a new debit transaction without enough balance', fu
 
     assertDatabaseCount(table: 'transactions', count: 1);
     assertDatabaseCount(table: 'balances', count: 1);
+});
+
+it('creates a new credit transaction and without default currency', function () {
+    assertDatabaseCount(table: 'ledger_currencies', count: 1);
+    assertDatabaseCount(table: 'transactions', count: 0);
+    assertDatabaseCount(table: 'balances', count: 0);
+
+    $newCurrency = Currency::factory()->create([
+        'code' => 'USD',
+        'name' => 'US dollar'
+    ]);
+
+    $response = postJson($this->route, [
+        'type' => 'credit',
+        'amount' => 110,
+        'currency_code' => $newCurrency->code,
+    ]);
+
+    $response->assertCreated();
+
+    expect($response->json('data.transaction_id'))
+        ->not->toBeNull();
+
+    assertDatabaseCount(table: 'transactions', count: 1);
+    assertDatabaseCount(table: 'balances', count: 1);
+    assertDatabaseCount(table: 'ledger_currencies', count: 2);
+
+    assertDatabaseHas(table: 'transactions', data: [
+        'type' => 'credit',
+        'amount' => 110,
+        'currency_id' => $newCurrency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+
+    assertDatabaseHas(table: 'balances', data: [
+        'balance' => 110,
+        'currency_id' => $newCurrency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
+
+    assertDatabaseHas(table: 'ledger_currencies', data: [
+        'currency_id' => $newCurrency->id,
+        'ledger_id' => $this->ledger->id,
+    ]);
 });

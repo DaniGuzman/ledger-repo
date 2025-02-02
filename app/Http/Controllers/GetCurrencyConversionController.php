@@ -13,8 +13,8 @@ class GetCurrencyConversionController extends Controller
      * @throws \Exception
      * @throws \Throwable
      *
-     * @OA\Post(
-     *     path="/api/convert",
+     * @OA\Get(
+     *     path="/convert",
      *     summary="Convert currency from one to another",
      *     description="This endpoint allows you to convert an amount from one currency to another.",
      *     @OA\RequestBody(

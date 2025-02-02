@@ -15,16 +15,16 @@
     },
     "servers": [
         {
-            "url": "https://laravel.test/v1",
+            "url": "http://localhost:7877/api",
             "description": "Main API server"
         }
     ],
     "paths": {
-        "/api/ledgers": {
+        "/ledgers": {
             "post": {
                 "summary": "Create a new ledger",
                 "description": "This endpoint allows you to create a new ledger.",
-                "operationId": "fc1b627b8f809c9c63b299f404965450",
+                "operationId": "980c14f4a29977e76de30ba33cf42c2a",
                 "requestBody": {
                     "description": "Ledger information",
                     "required": true,
@@ -72,11 +72,11 @@
                 }
             }
         },
-        "/api/ledgers/{ledger}/transactions": {
+        "/ledgers/{ledger}/transactions": {
             "post": {
                 "summary": "Create a new transaction",
                 "description": "This endpoint allows you to create a new transaction in a ledger.",
-                "operationId": "3b6b78d684f1063930dfe488356f3256",
+                "operationId": "64654edccfc96ecfb395ad7b9be68e43",
                 "parameters": [
                     {
                         "name": "ledger",
@@ -142,11 +142,11 @@
                 }
             }
         },
-        "/api/convert": {
-            "post": {
+        "/convert": {
+            "get": {
                 "summary": "Convert currency from one to another",
                 "description": "This endpoint allows you to convert an amount from one currency to another.",
-                "operationId": "c23b1edd75ab56f8e93cb1ef1e177726",
+                "operationId": "96550d4c4bac99bcb4cf2b56f2ef1c3f",
                 "requestBody": {
                     "description": "Currency conversion details",
                     "required": true,
@@ -226,14 +226,14 @@
                 }
             }
         },
-        "/api/{ledger}/balances": {
+        "/ledgers/{ledger}/balances": {
             "get": {
                 "summary": "Get the balance of a ledger",
                 "description": "This endpoint retrieves the balance of a specific ledger by its ID.",
-                "operationId": "1d4fd7bf7b6d0d4101e5ae1b8b1af807",
+                "operationId": "bc45d76320241e47f7f294e1331829e1",
                 "parameters": [
                     {
-                        "name": "ledgerId",
+                        "name": "ledger",
                         "in": "path",
                         "required": true,
                         "schema": {

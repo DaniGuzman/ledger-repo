@@ -22,7 +22,7 @@ abstract class Controller
      *         )
      *     ),
      *     @OA\Server(
-     *         url="https://laravel.test/v1",
+     *         url="http://localhost:7877/api/",
      *         description="Main API server"
      *     )
      * )

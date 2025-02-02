@@ -6,6 +6,7 @@ use App\DTOs\CreateTransactionDto;
 use App\Models\Balance;
 use App\Models\Currency;
 use App\Models\Ledger;
+use App\Models\LedgerCurrencies;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -19,16 +20,14 @@ class CreateTransactionAction
      */
     public function execute(Ledger $ledger, Currency $currency, CreateTransactionDto $dto): Transaction
     {
-        throw_if(
-            condition: $ledger->currencies()
-                ->where('code', $currency->code)
-                ->doesntExist(),
-            exception: ValidationException::withMessages(messages: [
-                'currency_code' => 'This Ledger doesnt support this currency.',
-            ]),
-        );
-
         return DB::transaction(function () use ($dto, $ledger, $currency) {
+            if ($ledger->currencies()->where('code', $currency->code)->doesntExist()) {
+                LedgerCurrencies::query()->create([
+                    'ledger_id' => $ledger->id,
+                    'currency_id' => $currency->id,
+                ]);
+            }
+
             $transaction = $ledger->transactions()->create([
                 'transaction_id' => Str::uuid()->toString(),
                 'type' => $dto->type,
