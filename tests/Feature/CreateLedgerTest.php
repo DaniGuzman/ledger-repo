@@ -87,8 +87,8 @@ it('throttles requests after the rate limit is reached', function () {
     }
 
     postJson($this->route,  [
-        'name' => '__random_name__' . 10,
-        'currency_code' => '__random_code__' . 10
+        'name' => '__random_ledger_name__',
+        'currency_code' => $this->currency->code,
     ])
         ->assertTooManyRequests()
         ->assertJson(['message' => 'Too Many Attempts.']);

@@ -49,7 +49,7 @@ it('responds unprocessable if validation fails', function (array $body, array $m
         ],
         'messages' => [
             'type' => ['The selected type is invalid.', 'The type field must be a string.'],
-            'amount' => ['The amount field must be a number.'],
+            'amount' => ['The amount field must be a number.', 'The amount field must be an integer.'],
             'currency_code' => ['The currency code field must be a string.']
         ],
     ],
@@ -103,7 +103,7 @@ it('creates a new credit transaction and creates a new balance', function () {
         $data
     );
 
-    $response->assertNoContent();
+    $response->assertCreated();
 
     assertDatabaseCount(table: 'transactions', count: 1);
     assertDatabaseCount(table: 'balances', count: 1);
@@ -166,7 +166,10 @@ it('creates a new debit transaction and updates the balance', function () {
         $data
     );
 
-    $response->assertNoContent();
+    $response->assertCreated();
+
+    expect($response->json('data.transaction_id'))
+        ->not->toBeNull();
 
     assertDatabaseCount(table: 'transactions', count: 2);
     assertDatabaseCount(table: 'balances', count: 1);

@@ -1,0 +1,350 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "LEDGERS TASK - GUZMAN",
+        "description": "This is the API documentation for my Task.",
+        "contact": {
+            "name": "API Support",
+            "email": "no-support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://laravel.test/v1",
+            "description": "Main API server"
+        }
+    ],
+    "paths": {
+        "/api/ledgers": {
+            "post": {
+                "summary": "Create a new ledger",
+                "description": "This endpoint allows you to create a new ledger.",
+                "operationId": "fc1b627b8f809c9c63b299f404965450",
+                "requestBody": {
+                    "description": "Ledger information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "currency_code"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "My first ledger"
+                                    },
+                                    "currency_code": {
+                                        "type": "string",
+                                        "example": "USD"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ledger created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/LedgerResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    }
+                }
+            }
+        },
+        "/api/ledgers/{ledger}/transactions": {
+            "post": {
+                "summary": "Create a new transaction",
+                "description": "This endpoint allows you to create a new transaction in a ledger.",
+                "operationId": "3b6b78d684f1063930dfe488356f3256",
+                "parameters": [
+                    {
+                        "name": "ledger",
+                        "in": "path",
+                        "description": "The ID of the ledger where the transaction will be created.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Transaction details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "amount",
+                                    "currency_code"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "credit"
+                                    },
+                                    "amount": {
+                                        "description": "The amount is always cents",
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "currency_code": {
+                                        "type": "string",
+                                        "example": "USD"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Transaction created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/TransactionResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    }
+                }
+            }
+        },
+        "/api/convert": {
+            "post": {
+                "summary": "Convert currency from one to another",
+                "description": "This endpoint allows you to convert an amount from one currency to another.",
+                "operationId": "c23b1edd75ab56f8e93cb1ef1e177726",
+                "requestBody": {
+                    "description": "Currency conversion details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "currency_code",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "currency_code": {
+                                        "required": [
+                                            "origin",
+                                            "target"
+                                        ],
+                                        "properties": {
+                                            "origin": {
+                                                "type": "string",
+                                                "example": "USD"
+                                            },
+                                            "target": {
+                                                "type": "string",
+                                                "example": "EUR"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 100
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Currency converted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "converted_amount": {
+                                                    "type": "integer",
+                                                    "example": 85
+                                                },
+                                                "currency_code": {
+                                                    "properties": {
+                                                        "origin": {
+                                                            "type": "string",
+                                                            "example": "USD"
+                                                        },
+                                                        "target": {
+                                                            "type": "string",
+                                                            "example": "EUR"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    }
+                }
+            }
+        },
+        "/api/{ledger}/balances": {
+            "get": {
+                "summary": "Get the balance of a ledger",
+                "description": "This endpoint retrieves the balance of a specific ledger by its ID.",
+                "operationId": "1d4fd7bf7b6d0d4101e5ae1b8b1af807",
+                "parameters": [
+                    {
+                        "name": "ledgerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ledger balance retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/BalanceResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ledger not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BalanceResponse": {
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T14:30:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T15:00:00Z"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "balance": {
+                        "type": "integer",
+                        "example": "100"
+                    }
+                },
+                "type": "object"
+            },
+            "LedgerResponse": {
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T14:30:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T15:00:00Z"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "My first ledger"
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionResponse": {
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T14:30:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-02T15:00:00Z"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "transaction_id": {
+                        "type": "string",
+                        "example": "TX123"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "credit"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

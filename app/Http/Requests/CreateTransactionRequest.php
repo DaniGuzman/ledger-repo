@@ -24,7 +24,7 @@ class CreateTransactionRequest extends FormRequest
     {
         return [
             'type' => ['required', 'string', Rule::in(['debit', 'credit'])],
-            'amount' => ['required', 'numeric', 'min:1'],
+            'amount' => ['required', 'integer', 'numeric', 'min:1'],
             'currency_code' => [
                 'required',
                 'string',

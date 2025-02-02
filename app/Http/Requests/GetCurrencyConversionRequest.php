@@ -25,7 +25,7 @@ class GetCurrencyConversionRequest extends FormRequest
             'currency_code' => ['array', 'required'],
             'currency_code.origin' => ['required', 'string', 'max:255'],
             'currency_code.target' => ['required', 'string', 'max:255', 'different:currency_code.origin'],
-            'amount' => ['required', 'numeric', 'min:100'],
+            'amount' => ['required', 'integer', 'numeric', 'min:100'],
         ];
     }
 }

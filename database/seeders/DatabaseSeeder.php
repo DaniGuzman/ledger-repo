@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Currency;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,16 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        Currency::factory()->create([
+            'code' => 'USD',
+            'name' => 'us dollar'
+        ]);
+
+        Currency::factory()->create([
+            'code' => 'EUR',
+            'name' => 'eu currency'
         ]);
     }
 }
