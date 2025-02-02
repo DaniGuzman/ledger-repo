@@ -16,6 +16,7 @@ class ListBalancesController extends Controller
      *
      * @OA\Get(
      *     path="/ledgers/{ledger}/balances",
+     *     tags={"Ledgers"},
      *     summary="Get the balance of a ledger",
      *     description="This endpoint retrieves the balance of a specific ledger by its ID.",
      *     @OA\Parameter(

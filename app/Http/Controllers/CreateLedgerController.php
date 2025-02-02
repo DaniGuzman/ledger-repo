@@ -13,12 +13,26 @@ use OpenApi\Annotations as OA;
 class CreateLedgerController extends Controller
 {
     /**
-     * @param CreateLedgerRequest $request
-     * @param CreateLedgerAction $action
-     * @return JsonResource
+     *
+     * @OA\OpenApi(
+     *      @OA\Info(
+     *          title="LEDGERS TASK - GUZMAN",
+     *          version="1.0.0",
+     *          description="This is the API documentation for my Task.",
+     *          @OA\License(
+     *              name="MIT",
+     *              url="https://opensource.org/licenses/MIT"
+     *          )
+     *      ),
+     *      @OA\Server(
+     *          url="http://localhost:7877/api/",
+     *          description="Main API server"
+     *      )
+     *  )
      *
      * @OA\Post(
      *       path="/ledgers",
+     *       tags={"Ledgers"},
      *       summary="Create a new ledger",
      *       description="This endpoint allows you to create a new ledger.",
      *       @OA\RequestBody(
@@ -47,6 +61,11 @@ class CreateLedgerController extends Controller
      *           description="Invalid request data"
      *       )
      *   )
+     *
+     * @param CreateLedgerRequest $request
+     * @param CreateLedgerAction $action
+     * @return JsonResource
+     *
      */
     public function __invoke(CreateLedgerRequest $request, CreateLedgerAction $action): JsonResource
     {

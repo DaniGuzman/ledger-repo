@@ -15,6 +15,7 @@ class GetCurrencyConversionController extends Controller
      *
      * @OA\Get(
      *     path="/convert",
+     *     tags={"Conversion"},
      *     summary="Convert currency from one to another",
      *     description="This endpoint allows you to convert an amount from one currency to another.",
      *     @OA\RequestBody(

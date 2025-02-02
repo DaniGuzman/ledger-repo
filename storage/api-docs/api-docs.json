@@ -3,10 +3,6 @@
     "info": {
         "title": "LEDGERS TASK - GUZMAN",
         "description": "This is the API documentation for my Task.",
-        "contact": {
-            "name": "API Support",
-            "email": "no-support@example.com"
-        },
         "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
@@ -15,13 +11,16 @@
     },
     "servers": [
         {
-            "url": "http://localhost:7877/api",
+            "url": "http://localhost:7877/api/",
             "description": "Main API server"
         }
     ],
     "paths": {
         "/ledgers": {
             "post": {
+                "tags": [
+                    "Ledgers"
+                ],
                 "summary": "Create a new ledger",
                 "description": "This endpoint allows you to create a new ledger.",
                 "operationId": "980c14f4a29977e76de30ba33cf42c2a",
@@ -74,6 +73,9 @@
         },
         "/ledgers/{ledger}/transactions": {
             "post": {
+                "tags": [
+                    "Ledgers"
+                ],
                 "summary": "Create a new transaction",
                 "description": "This endpoint allows you to create a new transaction in a ledger.",
                 "operationId": "64654edccfc96ecfb395ad7b9be68e43",
@@ -144,6 +146,9 @@
         },
         "/convert": {
             "get": {
+                "tags": [
+                    "Conversion"
+                ],
                 "summary": "Convert currency from one to another",
                 "description": "This endpoint allows you to convert an amount from one currency to another.",
                 "operationId": "96550d4c4bac99bcb4cf2b56f2ef1c3f",
@@ -228,6 +233,9 @@
         },
         "/ledgers/{ledger}/balances": {
             "get": {
+                "tags": [
+                    "Ledgers"
+                ],
                 "summary": "Get the balance of a ledger",
                 "description": "This endpoint retrieves the balance of a specific ledger by its ID.",
                 "operationId": "bc45d76320241e47f7f294e1331829e1",
@@ -346,5 +354,15 @@
                 "type": "object"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Ledgers",
+            "description": "Ledgers"
+        },
+        {
+            "name": "Conversion",
+            "description": "Conversion"
+        }
+    ]
 }

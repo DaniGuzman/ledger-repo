@@ -19,6 +19,7 @@ class CreateTransactionController extends Controller
      *
      * @OA\Post(
      *     path="/ledgers/{ledger}/transactions",
+     *     tags={"Ledgers"},
      *     summary="Create a new transaction",
      *     description="This endpoint allows you to create a new transaction in a ledger.",
      *     @OA\Parameter(
