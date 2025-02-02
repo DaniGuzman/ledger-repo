@@ -47,6 +47,18 @@ it('responds unprocessable if validation fails', function (array $body, array $m
             'currency_code' => ['The selected currency code is invalid.']
         ],
     ],
+    'unique name' => function () {
+        $ledger = Ledger::factory()->create(['name' => '__random_naming__']);
+
+        return  [
+            'body' => [
+                'name' => $ledger->name,
+            ],
+            'messages' => [
+                'name' => ['The name has already been taken.'],
+            ],
+        ];
+    }
 ]);
 
 it('creates a new ledger with a unique identifier and initial currency setting', function () {

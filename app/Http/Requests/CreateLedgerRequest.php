@@ -23,7 +23,7 @@ class CreateLedgerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('ledgers', 'name'),],
             'currency_code' => ['required', 'string', Rule::exists(table: 'currencies', column: 'code')]
         ];
     }
