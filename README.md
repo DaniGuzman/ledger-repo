@@ -68,7 +68,7 @@ This project is a **multi-currency ledger service** built using **Laravel**. It 
 
     Atomic Transactions: Uses database transactions to ensure data integrity.
 
-## API ENDPOINTS
+## API ENDPOINTS (check the swagger documentation)
 1. POST /api/ledgers -> Create a New Ledger
 2. POST /api/ledgers/{ledgerId}/transactions -> Create a New Transactions
 3. GET /api/ledgers/{ledgerId}/balances -> List all transactions for a specific ledger
