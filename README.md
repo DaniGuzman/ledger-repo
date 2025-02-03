@@ -72,8 +72,8 @@ This project is a **multi-currency ledger service** built using **Laravel**. It 
 
 ## API ENDPOINTS (check the swagger documentation)
 1. POST /api/ledgers -> Create a New Ledger
-2. POST /api/ledgers/{ledgerId}/transactions -> Create a New Transactions
-3. GET /api/ledgers/{ledgerId}/balances -> List all transactions for a specific ledger
+2. POST /api/ledgers/{ledger}/transactions -> Create a New Transactions
+3. GET /api/ledgers/{ledger}/balances -> List all transactions for a specific ledger
 4. GET /api/convert -> Convert between currencies
 5. GET /api/documentation -> Swagger documentation
 
