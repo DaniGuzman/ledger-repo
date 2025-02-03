@@ -7,14 +7,14 @@ This project is a **multi-currency ledger service** built using **Laravel**. It 
 - **Transaction Recording**: Record debit and credit transactions.
 - **Real-Time Balances**: Retrieve real-time balances for ledgers.
 - **ACID Compliance**: Ensures data integrity with PostgreSQL.
-- **Docker Support**: Containerized for easy deployment and scalability.
+- **Docker Support**: Containerized for easy deployment and scalability with Laravel Sail.
 
 ---
 
 ## Setup Instructions
 
 ### Prerequisites
-- Docker and Docker Compose
+- Laravel Sail
 - PHP 8.3
 - Composer
 
@@ -23,7 +23,9 @@ This project is a **multi-currency ledger service** built using **Laravel**. It 
    ```bash
    git clone https://github.com/DaniGuzman/ledger-repo.git
    cd to the directory
-2. **Composer install**
+2. **Install dependencies**
+   ```bash
+   composer install
 3. **Copy env**
     ```bash
    cp .env.example .env
@@ -73,7 +75,7 @@ This project is a **multi-currency ledger service** built using **Laravel**. It 
 2. POST /api/ledgers/{ledgerId}/transactions -> Create a New Transactions
 3. GET /api/ledgers/{ledgerId}/balances -> List all transactions for a specific ledger
 4. GET /api/convert -> Convert between currencies
-5. GET /api/documentation -> Get Swagger documentation
+5. GET /api/documentation -> Swagger documentation
 
 ## TEST
 1. **Run tests**:
