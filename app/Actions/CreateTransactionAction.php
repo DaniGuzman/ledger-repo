@@ -21,12 +21,11 @@ class CreateTransactionAction
     public function execute(Ledger $ledger, Currency $currency, CreateTransactionDto $dto): Transaction
     {
         return DB::transaction(function () use ($dto, $ledger, $currency) {
-            if ($ledger->currencies()->where('code', $currency->code)->doesntExist()) {
-                LedgerCurrencies::query()->create([
-                    'ledger_id' => $ledger->id,
-                    'currency_id' => $currency->id,
-                ]);
-            }
+            $ledger->currencies()
+                ->where('code', $currency->code)
+                ->existsOr(
+                    fn () => $ledger->currencies()->attach($currency->id)
+                );
 
             $transaction = $ledger->transactions()->create([
                 'transaction_id' => Str::uuid()->toString(),
